@@ -830,7 +830,91 @@
                         body { font-family: 'Segoe UI', sans-serif; padding: 20px; background: #f8f9fa; }
                         .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
                     </style>
-                </head><!DOCTYPE html>
+                <body>
+                <div class="container">
+                    <h2 style="text-align: center; color: #2c3e50; margin-bottom: 20px;">
+                        ${student.name} (${student.grade}학년 ${student.class} ${student.number || ''})
+                    </h2>
+                    
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <h3 style="color: #2c3e50; margin-bottom: 15px;">영역별 점수</h3>
+                        ${detailHtml}
+                    </div>
+                </div>
+                </body>
+                </html>
+            `);
+            newWindow.document.close();
+        }
+
+        async function exportToCSV() {
+            if (filteredAssessments.length === 0) {
+                alert('내보낼 데이터가 없습니다.');
+                return;
+            }
+
+            // CSV 헤더
+            const headers = [
+                '이름', '학년', '반', '번호', '검사일시',
+                '실행력 점수', '영향력 점수', '관계구축 점수', '전략적사고 점수', '전체평균',
+                '1위 강점', '2위 강점', '3위 강점', '4위 강점', '5위 강점'
+            ];
+
+            // CSV 데이터 생성
+            const csvData = filteredAssessments.map(assessment => {
+                const student = assessment.studentInfo;
+                const domainScores = assessment.domainScores || {};
+                const topStrengths = assessment.topStrengths || [];
+                
+                const executing = domainScores.executing?.score?.toFixed(1) || '0.0';
+                const influencing = domainScores.influencing?.score?.toFixed(1) || '0.0';
+                const relationship = domainScores.relationship?.score?.toFixed(1) || '0.0';
+                const strategic = domainScores.strategic?.score?.toFixed(1) || '0.0';
+                
+                const overall = calculateStudentAverage(assessment);
+                const completedDate = new Date(assessment.completedAt).toLocaleString('ko-KR');
+
+                return [
+                    student.name,
+                    student.grade + '학년',
+                    student.class,
+                    student.number || '',
+                    completedDate,
+                    executing,
+                    influencing,
+                    relationship,
+                    strategic,
+                    overall,
+                    topStrengths[0]?.korean || '',
+                    topStrengths[1]?.korean || '',
+                    topStrengths[2]?.korean || '',
+                    topStrengths[3]?.korean || '',
+                    topStrengths[4]?.korean || ''
+                ];
+            });
+
+            // CSV 문자열 생성
+            const csvContent = [headers, ...csvData]
+                .map(row => row.map(field => `"${field}"`).join(','))
+                .join('\n');
+
+            // UTF-8 BOM 추가 (한글 깨짐 방지)
+            const BOM = '\uFEFF';
+            const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
+
+            // 다운로드
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `강점검사결과_${new Date().toISOString().slice(0, 10)}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html><!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
