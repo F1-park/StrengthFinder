@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StrengthsFinder 34개 강점 체크리스트</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .student-info {
+            background: #f8f9fa;
+            padding: 30px;
+            border-left: 5px solid #4facfe;
+        }
+        
+        .student-info h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .input-group label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+        
+        .input-group input, .input-group select {
+            padding: 12px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+        
+        .input-group input:focus, .input-group select:focus {
+            border-color: #4facfe;
+            outline: none;
+        }
+        
+        .instructions {
+            background: #f8f9fa;
+            padding: 30px;
+            border-left: 5px solid #4facfe;
+        }
+        
+        .instructions h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .scale {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .scale-item {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .scale-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .scale-1 { background: #e74c3c; }
+        .scale-2 { background: #f39c12; }
+        .scale-3 { background: #f1c40f; }
+        .scale-4 { background: #2ecc71; }
+        .scale-5 { background: #27ae60; }
+        
+        .domain {
+            margin: 40px;
+        }
+        
+        .domain-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .domain-title {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .domain-icon {
+            font-size: 1.5em;
+            margin-right: 15px;
+        }
+        
+        .domain-description {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .strength {
+            background: white;
+            border: 2px solid #ecf0f1;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .strength:hover {
+            border-color: #4facfe;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.15);
+        }
+        
+        .strength-title {
+            font-size: 1.3em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .question {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #4facfe;
+        }
+        
+        .question-text {
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .radio-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        
+        .radio-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+        
+        .radio-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+        
+        .radio-option label {
+            font-size: 0.9em;
+            text-align: center;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            display: block;
+            margin: 40px auto;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(79, 172, 254, 0.4);
+        }
+        
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .results {
+            display: none;
+            margin: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+        }
+        
+        .results h2 {
+            font-size: 2em;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .domain-result {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .domain-result h3 {
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+        
+        .score {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #4facfe;
+        }
+        
+        .top-strengths {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 25px;
+        }
+        
+        .top-strengths h3 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .strength-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4facfe;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .success-message {
+            display: none;
+            background: #2ecc71;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 40px;
+            text-align: center;
+        }
+        
+        .error-message {
+            display: none;
+            background: #e74c3c;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 40px;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .radio-group {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .radio-option {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            
+            .scale {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .scale-item {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .scale-number {
+                margin: 0;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 StrengthsFinder 강점 체크리스트</h1>
+            <p>당신의 강점을 발견하고 개발하세요</p>
+        </div>
+        
+        <div class="student-info">
+            <h2>👤 학생 정보</h2>
+            <div class="info-grid">
+                <div class="input-group">
+                    <label for="studentName">이름 *</label>
+                    <input type="text" id="studentName" placeholder="학생 이름을 입력하세요" required>
+                </div>
+                <div class="input-group">
+                    <label for="studentGrade">학년 *</label>
+                    <select id="studentGrade" required>
+                        <option value="">학년 선택</option>
+                        <option value="1">1학년</option>
+                        <option value="2">2학년</option>
+                        <option value="3">3학년</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="studentClass">반 *</label>
+                    <input type="text" id="studentClass" placeholder="반 (예: 1반, A반)" required>
+                </div>
+                <div class="input-group">
+                    <label for="studentNumber">번호</label>
+                    <input type="number" id="studentNumber" placeholder="출석번호" min="1" max="50">
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h2>📋 측정 방법 안내</h2>
+            <p>각 문항에 대해 자신에게 얼마나 해당되는지 5점 척도로 평가해주세요:</p>
+            
+            <div class="scale">
+                <div class="scale-item">
+                    <div class="scale-number scale-1">1</div>
+                    <div>전혀 그렇지 않다</div>
+                </div>
+                <div class="scale-item">
+                    <div class="scale-number scale-2">2</div>
+                    <div>그렇지 않다</div>
+                </div>
+                <div class="scale-item">
+                    <div class="scale-number scale-3">3</div>
+                    <div>보통이다</div>
+                </div>
+                <div class="scale-item">
+                    <div class="scale-number scale-4">4</div>
+                    <div>그렇다</div>
+                </div>
+                <div class="scale-item">
+                    <div class="scale-number scale-5">5</div>
+                    <div>매우 그렇다</div>
+                </div>
+            </div>
+        </div>
+
+        <form id="strengthsForm">
+            <!-- 실행력 영역 -->
+            <div class="domain">
+                <div class="domain-header">
+                    <div class="domain-title">
+                        <span class="domain-icon">🎯</span>
+                        1. 실행력 (Executing) 영역
+                    </div>
+                    <div class="domain-description">목표를 달성하고 일을 완수하는 능력</div>
+                </div>
+
+                <!-- Achiever -->
+                <div class="strength">
+                    <div class="strength-title">성취욕 (Achiever)</div>
+                    
+                    <div class="question">
+                        <div class="question-text">1. 나는 매일 무언가를 달성해야 만족감을 느낀다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="achiever_1" value="1" id="achiever_1_1">
+                                <label for="achiever_1_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="achiever_1" value="2" id="achiever_1_2">
+                                <label for="achiever_1_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="achiever_1" value="3" id="achiever_1_3">
+                                <label for="achiever_1_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="achiever_1" value="4" id="achiever_1_4">
+                                <label for="achiever_1_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="achiever_1" value="5" id="achiever_1_5">
+                                <label for="achiever_1_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">2. 바쁘고 생산적인 일상을 선호한다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="achiever_2" value="1" id="achiever_2_1">
+                                <label for="achiever_2_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="achiever_2" value="2" id="achiever_2_2">
+                                <label for="achiever_2_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="achiever_2" value="3" id="achiever_2_3">
+                                <label for="achiever_2_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="achiever_2" value="4" id="achiever_2_4">
+                                <label for="achiever_2_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="achiever_2" value="5" id="achiever_2_5">
+                                <label for="achiever_2_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">3. 목표를 달성하면 즉시 다음 목표를 설정한다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="achiever_3" value="1" id="achiever_3_1">
+                                <label for="achiever_3_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="achiever_3" value="2" id="achiever_3_2">
+                                <label for="achiever_3_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="achiever_3" value="3" id="achiever_3_3">
+                                <label for="achiever_3_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="achiever_3" value="4" id="achiever_3_4">
+                                <label for="achiever_3_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="achiever_3" value="5" id="achiever_3_5">
+                                <label for="achiever_3_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Discipline -->
+                <div class="strength">
+                    <div class="strength-title">규율성 (Discipline)</div>
+                    
+                    <div class="question">
+                        <div class="question-text">1. 체계적이고 조직적인 환경을 만든다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="discipline_1" value="1" id="discipline_1_1">
+                                <label for="discipline_1_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="discipline_1" value="2" id="discipline_1_2">
+                                <label for="discipline_1_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="discipline_1" value="3" id="discipline_1_3">
+                                <label for="discipline_1_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="discipline_1" value="4" id="discipline_1_4">
+                                <label for="discipline_1_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="discipline_1" value="5" id="discipline_1_5">
+                                <label for="discipline_1_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">2. 일정과 계획을 세우고 따르는 것을 좋아한다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="discipline_2" value="1" id="discipline_2_1">
+                                <label for="discipline_2_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="discipline_2" value="2" id="discipline_2_2">
+                                <label for="discipline_2_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="discipline_2" value="3" id="discipline_2_3">
+                                <label for="discipline_2_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="discipline_2" value="4" id="discipline_2_4">
+                                <label for="discipline_2_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="discipline_2" value="5" id="discipline_2_5">
+                                <label for="discipline_2_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">3. 정리정돈이 잘 되어 있어야 편안함을 느낀다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="discipline_3" value="1" id="discipline_3_1">
+                                <label for="discipline_3_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="discipline_3" value="2" id="discipline_3_2">
+                                <label for="discipline_3_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="discipline_3" value="3" id="discipline_3_3">
+                                <label for="discipline_3_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="discipline_3" value="4" id="discipline_3_4">
+                                <label for="discipline_3_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="discipline_3" value="5" id="discipline_3_5">
+                                <label for="discipline_3_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Focus -->
+                <div class="strength">
+                    <div class="strength-title">집중력 (Focus)</div>
+                    
+                    <div class="question">
+                        <div class="question-text">1. 목표를 설정하면 그것에 집중한다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="focus_1" value="1" id="focus_1_1">
+                                <label for="focus_1_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="focus_1" value="2" id="focus_1_2">
+                                <label for="focus_1_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="focus_1" value="3" id="focus_1_3">
+                                <label for="focus_1_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="focus_1" value="4" id="focus_1_4">
+                                <label for="focus_1_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="focus_1" value="5" id="focus_1_5">
+                                <label for="focus_1_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">2. 우선순위를 명확히 하여 일을 처리한다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="focus_2" value="1" id="focus_2_1">
+                                <label for="focus_2_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="focus_2" value="2" id="focus_2_2">
+                                <label for="focus_2_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="focus_2" value="3" id="focus_2_3">
+                                <label for="focus_2_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="focus_2" value="4" id="focus_2_4">
+                                <label for="focus_2_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="focus_2" value="5" id="focus_2_5">
+                                <label for="focus_2_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">3. 산만한 것들을 걸러내고 핵심에 집중한다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="focus_3" value="1" id="focus_3_1">
+                                <label for="focus_3_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="focus_3" value="2" id="focus_3_2">
+                                <label for="focus_3_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="focus_3" value="3" id="focus_3_3">
+                                <label for="focus_3_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="focus_3" value="4" id="focus_3_4">
+                                <label for="focus_3_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="focus_3" value="5" id="focus_3_5">
+                                <label for="focus_3_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 영향력 영역 -->
+            <div class="domain">
+                <div class="domain-header">
+                    <div class="domain-title">
+                        <span class="domain-icon">🌟</span>
+                        2. 영향력 (Influencing) 영역
+                    </div>
+                    <div class="domain-description">다른 사람들을 이끌고 영향을 미치는 능력</div>
+                </div>
+
+                <!-- Communication -->
+                <div class="strength">
+                    <div class="strength-title">소통능력 (Communication)</div>
+                    
+                    <div class="question">
+                        <div class="question-text">1. 생각과 아이디어를 명확하게 전달한다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="communication_1" value="1" id="communication_1_1">
+                                <label for="communication_1_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="communication_1" value="2" id="communication_1_2">
+                                <label for="communication_1_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="communication_1" value="3" id="communication_1_3">
+                                <label for="communication_1_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="communication_1" value="4" id="communication_1_4">
+                                <label for="communication_1_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="communication_1" value="5" id="communication_1_5">
+                                <label for="communication_1_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">2. 이야기하고 설명하는 것을 즐긴다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="communication_2" value="1" id="communication_2_1">
+                                <label for="communication_2_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="communication_2" value="2" id="communication_2_2">
+                                <label for="communication_2_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="communication_2" value="3" id="communication_2_3">
+                                <label for="communication_2_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="communication_2" value="4" id="communication_2_4">
+                                <label for="communication_2_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="communication_2" value="5" id="communication_2_5">
+                                <label for="communication_2_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">3. 복잡한 개념을 쉽게 설명할 수 있다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="communication_3" value="1" id="communication_3_1">
+                                <label for="communication_3_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="communication_3" value="2" id="communication_3_2">
+                                <label for="communication_3_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="communication_3" value="3" id="communication_3_3">
+                                <label for="communication_3_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="communication_3" value="4" id="communication_3_4">
+                                <label for="communication_3_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="communication_3" value="5" id="communication_3_5">
+                                <label for="communication_3_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Woo -->
+                <div class="strength">
+                    <div class="strength-title">사교성 (Woo)</div>
+                    
+                    <div class="question">
+                        <div class="question-text">1. 새로운 사람들을 만나는 것을 즐긴다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="woo_1" value="1" id="woo_1_1">
+                                <label for="woo_1_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="woo_1" value="2" id="woo_1_2">
+                                <label for="woo_1_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="woo_1" value="3" id="woo_1_3">
+                                <label for="woo_1_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="woo_1" value="4" id="woo_1_4">
+                                <label for="woo_1_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="woo_1" value="5" id="woo_1_5">
+                                <label for="woo_1_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">2. 다른 사람의 호감을 얻는 것이 자연스럽다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="woo_2" value="1" id="woo_2_1">
+                                <label for="woo_2_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="woo_2" value="2" id="woo_2_2">
+                                <label for="woo_2_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="woo_2" value="3" id="woo_2_3">
+                                <label for="woo_2_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="woo_2" value="4" id="woo_2_4">
+                                <label for="woo_2_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="woo_2" value="5" id="woo_2_5">
+                                <label for="woo_2_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">3. 낯선 사람과도 쉽게 대화를 시작한다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="woo_3" value="1" id="woo_3_1">
+                                <label for="woo_3_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="woo_3" value="2" id="woo_3_2">
+                                <label for="woo_3_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="woo_3" value="3" id="woo_3_3">
+                                <label for="woo_3_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="woo_3" value="4" id="woo_3_4">
+                                <label for="woo_3_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="woo_3" value="5" id="woo_3_5">
+                                <label for="woo_3_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activator -->
+                <div class="strength">
+                    <div class="strength-title">활성화 (Activator)</div>
+                    
+                    <div class="question">
+                        <div class="question-text">1. "언제 시작할까?"라고 자주 묻는다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="activator_1" value="1" id="activator_1_1">
+                                <label for="activator_1_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="activator_1" value="2" id="activator_1_2">
+                                <label for="activator_1_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="activator_1" value="3" id="activator_1_3">
+                                <label for="activator_1_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="activator_1" value="4" id="activator_1_4">
+                                <label for="activator_1_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="activator_1" value="5" id="activator_1_5">
+                                <label for="activator_1_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">2. 생각보다는 행동을 먼저 하는 편이다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="activator_2" value="1" id="activator_2_1">
+                                <label for="activator_2_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="activator_2" value="2" id="activator_2_2">
+                                <label for="activator_2_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="activator_2" value="3" id="activator_2_3">
+                                <label for="activator_2_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="activator_2" value="4" id="activator_2_4">
+                                <label for="activator_2_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="activator_2" value="5" id="activator_2_5">
+                                <label for="activator_2_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">3. 아이디어를 현실로 만드는 것을 좋아한다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="activator_3" value="1" id="activator_3_1">
+                                <label for="activator_3_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="activator_3" value="2" id="activator_3_2">
+                                <label for="activator_3_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="activator_3" value="3" id="activator_3_3">
+                                <label for="activator_3_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="activator_3" value="4" id="activator_3_4">
+                                <label for="activator_3_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="activator_3" value="5" id="activator_3_5">
+                                <label for="activator_3_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 관계구축 영역 -->
+            <div class="domain">
+                <div class="domain-header">
+                    <div class="domain-title">
+                        <span class="domain-icon">🤝</span>
+                        3. 관계구축 (Relationship Building) 영역
+                    </div>
+                    <div class="domain-description">팀을 결속시키고 강한 관계를 구축하는 능력</div>
+                </div>
+
+                <!-- Empathy -->
+                <div class="strength">
+                    <div class="strength-title">공감능력 (Empathy)</div>
+                    
+                    <div class="question">
+                        <div class="question-text">1. 다른 사람의 감정을 쉽게 이해한다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="empathy_1" value="1" id="empathy_1_1">
+                                <label for="empathy_1_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="empathy_1" value="2" id="empathy_1_2">
+                                <label for="empathy_1_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="empathy_1" value="3" id="empathy_1_3">
+                                <label for="empathy_1_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="empathy_1" value="4" id="empathy_1_4">
+                                <label for="empathy_1_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="empathy_1" value="5" id="empathy_1_5">
+                                <label for="empathy_1_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">2. 상대방의 입장에서 생각하려고 노력한다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="empathy_2" value="1" id="empathy_2_1">
+                                <label for="empathy_2_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="empathy_2" value="2" id="empathy_2_2">
+                                <label for="empathy_2_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="empathy_2" value="3" id="empathy_2_3">
+                                <label for="empathy_2_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="empathy_2" value="4" id="empathy_2_4">
+                                <label for="empathy_2_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="empathy_2" value="5" id="empathy_2_5">
+                                <label for="empathy_2_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">3. 타인의 감정에 공명하고 함께 느낀다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="empathy_3" value="1" id="empathy_3_1">
+                                <label for="empathy_3_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="empathy_3" value="2" id="empathy_3_2">
+                                <label for="empathy_3_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="empathy_3" value="3" id="empathy_3_3">
+                                <label for="empathy_3_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="empathy_3" value="4" id="empathy_3_4">
+                                <label for="empathy_3_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="empathy_3" value="5" id="empathy_3_5">
+                                <label for="empathy_3_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Positivity -->
+                <div class="strength">
+                    <div class="strength-title">긍정성 (Positivity)</div>
+                    
+                    <div class="question">
+                        <div class="question-text">1. 긍정적이고 낙관적인 성향을 가지고 있다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="positivity_1" value="1" id="positivity_1_1">
+                                <label for="positivity_1_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="positivity_1" value="2" id="positivity_1_2">
+                                <label for="positivity_1_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="positivity_1" value="3" id="positivity_1_3">
+                                <label for="positivity_1_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="positivity_1" value="4" id="positivity_1_4">
+                                <label for="positivity_1_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="positivity_1" value="5" id="positivity_1_5">
+                                <label for="positivity_1_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">2. 다른 사람들에게 활력과 에너지를 준다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="positivity_2" value="1" id="positivity_2_1">
+                                <label for="positivity_2_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="positivity_2" value="2" id="positivity_2_2">
+                                <label for="positivity_2_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="positivity_2" value="3" id="positivity_2_3">
+                                <label for="positivity_2_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="positivity_2" value="4" id="positivity_2_4">
+                                <label for="positivity_2_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="positivity_2" value="5" id="positivity_2_5">
+                                <label for="positivity_2_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">3. 어려운 상황에서도 밝은 면을 찾으려 한다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="positivity_3" value="1" id="positivity_3_1">
+                                <label for="positivity_3_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="positivity_3" value="2" id="positivity_3_2">
+                                <label for="positivity_3_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="positivity_3" value="3" id="positivity_3_3">
+                                <label for="positivity_3_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="positivity_3" value="4" id="positivity_3_4">
+                                <label for="positivity_3_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="positivity_3" value="5" id="positivity_3_5">
+                                <label for="positivity_3_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Includer -->
+                <div class="strength">
+                    <div class="strength-title">포용력 (Includer)</div>
+                    
+                    <div class="question">
+                        <div class="question-text">1. 소외된 사람이 없도록 신경 쓴다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="includer_1" value="1" id="includer_1_1">
+                                <label for="includer_1_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="includer_1" value="2" id="includer_1_2">
+                                <label for="includer_1_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="includer_1" value="3" id="includer_1_3">
+                                <label for="includer_1_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="includer_1" value="4" id="includer_1_4">
+                                <label for="includer_1_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="includer_1" value="5" id="includer_1_5">
+                                <label for="includer_1_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">2. 다양한 사람들을 그룹에 포함시키려 한다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="includer_2" value="1" id="includer_2_1">
+                                <label for="includer_2_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="includer_2" value="2" id="includer_2_2">
+                                <label for="includer_2_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="includer_2" value="3" id="includer_2_3">
+                                <label for="includer_2_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="includer_2" value="4" id="includer_2_4">
+                                <label for="includer_2_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="includer_2" value="5" id="includer_2_5">
+                                <label for="includer_2_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">3. 모든 사람이 소속감을 느끼기를 원한다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="includer_3" value="1" id="includer_3_1">
+                                <label for="includer_3_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="includer_3" value="2" id="includer_3_2">
+                                <label for="includer_3_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="includer_3" value="3" id="includer_3_3">
+                                <label for="includer_3_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="includer_3" value="4" id="includer_3_4">
+                                <label for="includer_3_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="includer_3" value="5" id="includer_3_5">
+                                <label for="includer_3_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 전략적 사고 영역 -->
+            <div class="domain">
+                <div class="domain-header">
+                    <div class="domain-title">
+                        <span class="domain-icon">🧠</span>
+                        4. 전략적 사고 (Strategic Thinking) 영역
+                    </div>
+                    <div class="domain-description">정보를 흡수하고 분석하여 더 나은 결정을 내리는 능력</div>
+                </div>
+
+                <!-- Learner -->
+                <div class="strength">
+                    <div class="strength-title">학습욕 (Learner)</div>
+                    
+                    <div class="question">
+                        <div class="question-text">1. 새로운 것을 배우는 과정 자체를 즐긴다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="learner_1" value="1" id="learner_1_1">
+                                <label for="learner_1_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="learner_1" value="2" id="learner_1_2">
+                                <label for="learner_1_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="learner_1" value="3" id="learner_1_3">
+                                <label for="learner_1_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="learner_1" value="4" id="learner_1_4">
+                                <label for="learner_1_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="learner_1" value="5" id="learner_1_5">
+                                <label for="learner_1_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">2. 지속적으로 성장하고 발전하려고 한다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="learner_2" value="1" id="learner_2_1">
+                                <label for="learner_2_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="learner_2" value="2" id="learner_2_2">
+                                <label for="learner_2_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="learner_2" value="3" id="learner_2_3">
+                                <label for="learner_2_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="learner_2" value="4" id="learner_2_4">
+                                <label for="learner_2_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="learner_2" value="5" id="learner_2_5">
+                                <label for="learner_2_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">3. 배움의 기회를 적극적으로 찾는다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="learner_3" value="1" id="learner_3_1">
+                                <label for="learner_3_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="learner_3" value="2" id="learner_3_2">
+                                <label for="learner_3_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="learner_3" value="3" id="learner_3_3">
+                                <label for="learner_3_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="learner_3" value="4" id="learner_3_4">
+                                <label for="learner_3_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="learner_3" value="5" id="learner_3_5">
+                                <label for="learner_3_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytical -->
+                <div class="strength">
+                    <div class="strength-title">분석사고 (Analytical)</div>
+                    
+                    <div class="question">
+                        <div class="question-text">1. 데이터와 증거를 바탕으로 결정을 내린다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="analytical_1" value="1" id="analytical_1_1">
+                                <label for="analytical_1_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="analytical_1" value="2" id="analytical_1_2">
+                                <label for="analytical_1_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="analytical_1" value="3" id="analytical_1_3">
+                                <label for="analytical_1_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="analytical_1" value="4" id="analytical_1_4">
+                                <label for="analytical_1_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="analytical_1" value="5" id="analytical_1_5">
+                                <label for="analytical_1_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">2. 논리적이고 객관적인 분석을 선호한다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="analytical_2" value="1" id="analytical_2_1">
+                                <label for="analytical_2_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="analytical_2" value="2" id="analytical_2_2">
+                                <label for="analytical_2_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="analytical_2" value="3" id="analytical_2_3">
+                                <label for="analytical_2_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="analytical_2" value="4" id="analytical_2_4">
+                                <label for="analytical_2_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="analytical_2" value="5" id="analytical_2_5">
+                                <label for="analytical_2_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">3. 원인과 결과의 관계를 찾으려고 한다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="analytical_3" value="1" id="analytical_3_1">
+                                <label for="analytical_3_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="analytical_3" value="2" id="analytical_3_2">
+                                <label for="analytical_3_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="analytical_3" value="3" id="analytical_3_3">
+                                <label for="analytical_3_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="analytical_3" value="4" id="analytical_3_4">
+                                <label for="analytical_3_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="analytical_3" value="5" id="analytical_3_5">
+                                <label for="analytical_3_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ideation -->
+                <div class="strength">
+                    <div class="strength-title">아이디어발상 (Ideation)</div>
+                    
+                    <div class="question">
+                        <div class="question-text">1. 창의적이고 혁신적인 아이디어를 만든다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="ideation_1" value="1" id="ideation_1_1">
+                                <label for="ideation_1_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="ideation_1" value="2" id="ideation_1_2">
+                                <label for="ideation_1_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="ideation_1" value="3" id="ideation_1_3">
+                                <label for="ideation_1_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="ideation_1" value="4" id="ideation_1_4">
+                                <label for="ideation_1_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="ideation_1" value="5" id="ideation_1_5">
+                                <label for="ideation_1_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">2. 브레인스토밍과 아이디어 회의를 즐긴다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="ideation_2" value="1" id="ideation_2_1">
+                                <label for="ideation_2_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="ideation_2" value="2" id="ideation_2_2">
+                                <label for="ideation_2_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="ideation_2" value="3" id="ideation_2_3">
+                                <label for="ideation_2_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="ideation_2" value="4" id="ideation_2_4">
+                                <label for="ideation_2_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="ideation_2" value="5" id="ideation_2_5">
+                                <label for="ideation_2_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">3. 서로 다른 개념들 사이의 연결점을 찾는다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="ideation_3" value="1" id="ideation_3_1">
+                                <label for="ideation_3_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="ideation_3" value="2" id="ideation_3_2">
+                                <label for="ideation_3_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="ideation_3" value="3" id="ideation_3_3">
+                                <label for="ideation_3_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="ideation_3" value="4" id="ideation_3_4">
+                                <label for="ideation_3_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="ideation_3" value="5" id="ideation_3_5">
+                                <label for="ideation_3_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Strategic -->
+                <div class="strength">
+                    <div class="strength-title">전략적사고 (Strategic)</div>
+                    
+                    <div class="question">
+                        <div class="question-text">1. 여러 옵션과 대안을 고려한다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="strategic_1" value="1" id="strategic_1_1">
+                                <label for="strategic_1_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="strategic_1" value="2" id="strategic_1_2">
+                                <label for="strategic_1_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="strategic_1" value="3" id="strategic_1_3">
+                                <label for="strategic_1_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="strategic_1" value="4" id="strategic_1_4">
+                                <label for="strategic_1_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="strategic_1" value="5" id="strategic_1_5">
+                                <label for="strategic_1_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">2. 최적의 경로와 방법을 찾으려고 한다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="strategic_2" value="1" id="strategic_2_1">
+                                <label for="strategic_2_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="strategic_2" value="2" id="strategic_2_2">
+                                <label for="strategic_2_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="strategic_2" value="3" id="strategic_2_3">
+                                <label for="strategic_2_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="strategic_2" value="4" id="strategic_2_4">
+                                <label for="strategic_2_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="strategic_2" value="5" id="strategic_2_5">
+                                <label for="strategic_2_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">3. 복잡한 상황에서 핵심을 꿰뚫어 본다</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="strategic_3" value="1" id="strategic_3_1">
+                                <label for="strategic_3_1">1점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="strategic_3" value="2" id="strategic_3_2">
+                                <label for="strategic_3_2">2점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="strategic_3" value="3" id="strategic_3_3">
+                                <label for="strategic_3_3">3점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="strategic_3" value="4" id="strategic_3_4">
+                                <label for="strategic_3_4">4점</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="strategic_3" value="5" id="strategic_3_5">
+                                <label for="strategic_3_5">5점</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="submit-btn" onclick="submitAssessment()">
+                📝 검사 결과 제출하기
+            </button>
+        </form>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>결과를 저장하고 있습니다...</p>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            <h3>✅ 검사가 완료되었습니다!</h3>
+            <p>결과가 성공적으로 저장되었습니다. 선생님이 결과를 확인할 수 있습니다.</p>
+        </div>
+
+        <div class="error-message" id="errorMessage">
+            <h3>❌ 오류가 발생했습니다</h3>
+            <p>잠시 후 다시 시도해주세요. 문제가 계속되면 선생님에게 문의하세요.</p>
+        </div>
+
+        <div id="results" class="results">
+            <h2>📊 나의 강점 분석 결과</h2>
+            
+            <div id="domainResults"></div>
+            
+            <div class="top-strengths">
+                <h3>🏆 나의 상위 5개 강점</h3>
+                <div id="topStrengths"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // ⚠️ 여기에 Firebase 구성 정보를 입력하세요
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+        import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+
+        // Firebase 구성 (Firebase 콘솔에서 복사)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDrj01C1WXwAi6DdOTFdEt2pcsr-8qi76U",
+            authDomain: "strengthsfinder-45ff8.firebaseapp.com",
+            projectId: "strengthsfinder-45ff8",
+            storageBucket: "strengthsfinder-45ff8.firebasestorage.app",
+            messagingSenderId: "739606720301",
+            appId: "1:739606720301:web:3b23bd465808132b38eda4"
+        };
+
+        // Firebase 초기화
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // 전역에서 사용할 수 있도록 설정
+        window.firebaseDB = db;
+        window.addDoc = addDoc;
+        window.collection = collection;
+        window.serverTimestamp = serverTimestamp;
+    </script>
+
+    <script>
+        function validateStudentInfo() {
+            const name = document.getElementById('studentName').value.trim();
+            const grade = document.getElementById('studentGrade').value;
+            const classRoom = document.getElementById('studentClass').value.trim();
+            
+            if (!name || !grade || !classRoom) {
+                alert('이름, 학년, 반은 필수 입력 항목입니다.');
+                return false;
+            }
+            return true;
+        }
+
+        function calculateResults() {
+            const strengths = [
+                {name: 'Achiever', korean: '성취욕', domain: 'executing'},
+                {name: 'Discipline', korean: '규율성', domain: 'executing'},
+                {name: 'Focus', korean: '집중력', domain: 'executing'},
+                {name: 'Communication', korean: '소통능력', domain: 'influencing'},
+                {name: 'Woo', korean: '사교성', domain: 'influencing'},
+                {name: 'Activator', korean: '활성화', domain: 'influencing'},
+                {name: 'Empathy', korean: '공감능력', domain: 'relationship'},
+                {name: 'Positivity', korean: '긍정성', domain: 'relationship'},
+                {name: 'Includer', korean: '포용력', domain: 'relationship'},
+                {name: 'Learner', korean: '학습욕', domain: 'strategic'},
+                {name: 'Analytical', korean: '분석사고', domain: 'strategic'},
+                {name: 'Ideation', korean: '아이디어발상', domain: 'strategic'},
+                {name: 'Strategic', korean: '전략적사고', domain: 'strategic'}
+            ];
+
+            const results = [];
+            
+            strengths.forEach(strength => {
+                const name = strength.name.toLowerCase();
+                let total = 0;
+                let count = 0;
+                
+                for (let i = 1; i <= 3; i++) {
+                    const radio = document.querySelector(`input[name="${name}_${i}"]:checked`);
+                    if (radio) {
+                        total += parseInt(radio.value);
+                        count++;
+                    }
+                }
+                
+                if (count > 0) {
+                    const average = total / count;
+                    results.push({
+                        ...strength,
+                        score: average
+                    });
+                }
+            });
+
+            // 점수 순으로 정렬
+            results.sort((a, b) => b.score - a.score);
+
+            // 영역별 점수 계산
+            const domainScores = {
+                executing: { total: 0, count: 0, name: '실행력', icon: '🎯' },
+                influencing: { total: 0, count: 0, name: '영향력', icon: '🌟' },
+                relationship: { total: 0, count: 0, name: '관계구축', icon: '🤝' },
+                strategic: { total: 0, count: 0, name: '전략적 사고', icon: '🧠' }
+            };
+
+            results.forEach(result => {
+                domainScores[result.domain].total += result.score;
+                domainScores[result.domain].count++;
+            });
+
+            return { results, domainScores };
+        }
+
+        function displayResults(results, domainScores) {
+            // 영역별 결과 표시
+            const domainResultsHtml = Object.keys(domainScores).map(domain => {
+                const data = domainScores[domain];
+                const average = data.count > 0 ? (data.total / data.count).toFixed(1) : 0;
+                const percentage = ((average / 5) * 100).toFixed(0);
+                
+                return `
+                    <div class="domain-result">
+                        <h3>${data.icon} ${data.name}</h3>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="score">${average}점</span>
+                            <div style="background: rgba(255,255,255,0.2); height: 20px; width: 200px; border-radius: 10px; overflow: hidden;">
+                                <div style="background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%); height: 100%; width: ${percentage}%; transition: width 0.5s ease;"></div>
+                            </div>
+                            <span>${percentage}%</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('domainResults').innerHTML = domainResultsHtml;
+
+            // 상위 5개 강점 표시
+            const topStrengthsHtml = results.slice(0, 5).map((result, index) => {
+                const medalIcon = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣'][index];
+                return `
+                    <div class="strength-item">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 1.2em;">${medalIcon}</span>
+                            <span>${result.korean} (${result.name})</span>
+                        </div>
+                        <span class="score">${result.score.toFixed(1)}점</span>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('topStrengths').innerHTML = topStrengthsHtml;
+
+            // 결과 섹션 표시
+            document.getElementById('results').style.display = 'block';
+        }
+
+        async function submitAssessment() {
+            // 학생 정보 유효성 검사
+            if (!validateStudentInfo()) {
+                return;
+            }
+
+            // 결과 계산
+            const { results, domainScores } = calculateResults();
+            
+            if (results.length === 0) {
+                alert('최소 1개 이상의 문항에 답변해주세요.');
+                return;
+            }
+
+            // 로딩 표시
+            document.getElementById('loading').style.display = 'block';
+            document.querySelector('.submit-btn').disabled = true;
+
+            try {
+                // 학생 정보 수집
+                const studentInfo = {
+                    name: document.getElementById('studentName').value.trim(),
+                    grade: document.getElementById('studentGrade').value,
+                    class: document.getElementById('studentClass').value.trim(),
+                    number: document.getElementById('studentNumber').value || null
+                };
+
+                // Firestore에 저장할 데이터 구성
+                const assessmentData = {
+                    studentInfo,
+                    results: results.map(r => ({
+                        name: r.name,
+                        korean: r.korean,
+                        domain: r.domain,
+                        score: parseFloat(r.score.toFixed(2))
+                    })),
+                    domainScores: Object.keys(domainScores).reduce((acc, domain) => {
+                        const data = domainScores[domain];
+                        acc[domain] = {
+                            name: data.name,
+                            score: data.count > 0 ? parseFloat((data.total / data.count).toFixed(2)) : 0
+                        };
+                        return acc;
+                    }, {}),
+                    topStrengths: results.slice(0, 5).map(r => ({
+                        name: r.name,
+                        korean: r.korean,
+                        score: parseFloat(r.score.toFixed(2))
+                    })),
+                    timestamp: window.serverTimestamp(),
+                    completedAt: new Date().toISOString()
+                };
+
+                // Firebase에 데이터 저장
+                if (window.firebaseDB) {
+                    await window.addDoc(window.collection(window.firebaseDB, 'assessments'), assessmentData);
+                    
+                    // 성공 메시지 표시
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('successMessage').style.display = 'block';
+                    
+                    // 결과 표시
+                    displayResults(results, domainScores);
+                    
+                    // 폼 비활성화
+                    document.getElementById('strengthsForm').style.opacity = '0.5';
+                    document.getElementById('strengthsForm').style.pointerEvents = 'none';
+                    
+                } else {
+                    throw new Error('Firebase가 초기화되지 않았습니다.');
+                }
+
+            } catch (error) {
+                console.error('저장 오류:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('errorMessage').style.display = 'block';
+                document.querySelector('.submit-btn').disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

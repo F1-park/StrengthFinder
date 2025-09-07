@@ -1,0 +1,879 @@
+.header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .controls {
+            background: #f8f9fa;
+            padding: 30px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .control-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .control-item {
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+        }
+        
+        .control-item label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+        
+        .control-item select, .control-item input {
+            padding: 12px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        
+        .control-item select:focus, .control-item input:focus {
+            border-color: #4facfe;
+            outline: none;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
+        }
+        
+        .btn-export {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        }
+        
+        .btn-refresh {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #4facfe;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.1em;
+            color: #666;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #4facfe;
+        }
+        
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .table td {
+            padding: 15px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .table tbody tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .score-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: white;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .score-excellent {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        }
+        
+        .score-good {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        }
+        
+        .score-average {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        }
+        
+        .score-below {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+        
+        .strengths-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .strength-tag {
+            background: #4facfe;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4facfe;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .chart-container {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .chart-title {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .domain-chart {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .domain-item {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .domain-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .domain-name {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .domain-score {
+            font-size: 2em;
+            font-weight: bold;
+            color: #4facfe;
+        }
+        
+        .domain-bar {
+            height: 10px;
+            background: #ecf0f1;
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .domain-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            transition: width 0.5s ease;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 80px 40px;
+            color: #666;
+        }
+        
+        .empty-state-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+            min-width: 150px;
+        }
+        
+        .filter-item label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        
+        .filter-item select, .filter-item input {
+            padding: 8px 12px;
+            border: 2px solid #ecf0f1;
+            border-radius: 6px;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .control-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .control-item {
+                min-width: auto;
+            }
+            
+            .stats {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+            
+            .table-container {
+                overflow-x: auto;
+            }
+            
+            .filters {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 강점 검사 관리자 대시보드</h1>
+            <p>학생들의 강점 검사 결과를 관리하고 분석하세요</p>
+        </div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <button class="btn btn-refresh" onclick="loadData()">
+                    🔄 데이터 새로고침
+                </button>
+                <button class="btn btn-export" onclick="exportToCSV()">
+                    📥 CSV 다운로드
+                </button>
+                <button class="btn" onclick="window.open('index.html', '_blank')">
+                    📋 검사 페이지 열기
+                </button>
+            </div>
+            
+            <div class="filters">
+                <div class="filter-item">
+                    <label for="gradeFilter">학년 필터</label>
+                    <select id="gradeFilter" onchange="applyFilters()">
+                        <option value="">전체</option>
+                        <option value="1">1학년</option>
+                        <option value="2">2학년</option>
+                        <option value="3">3학년</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="classFilter">반 필터</label>
+                    <select id="classFilter" onchange="applyFilters()">
+                        <option value="">전체</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="dateFilter">날짜 필터</label>
+                    <input type="date" id="dateFilter" onchange="applyFilters()">
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats" id="stats">
+            <!-- 통계 카드들이 여기에 동적으로 생성됩니다 -->
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <div class="section-title">📈 영역별 평균 점수</div>
+                <div class="chart-container">
+                    <div class="chart-title">4개 영역별 학급 평균</div>
+                    <div class="domain-chart" id="domainChart">
+                        <!-- 영역별 차트가 여기에 생성됩니다 -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">👥 학생별 검사 결과</div>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>이름</th>
+                                <th>학년/반</th>
+                                <th>번호</th>
+                                <th>검사일시</th>
+                                <th>상위 강점</th>
+                                <th>전체 평균</th>
+                                <th>상세</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsTable">
+                            <!-- 학생 데이터가 여기에 동적으로 생성됩니다 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>데이터를 불러오는 중...</p>
+        </div>
+        
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-state-icon">📊</div>
+            <h3>아직 검사 결과가 없습니다</h3>
+            <p>학생들이 강점 검사를 완료하면 여기에 결과가 표시됩니다.</p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+        import { getFirestore, collection, getDocs, query, orderBy, where } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+
+        // Firebase 구성 (학생용 페이지와 동일한 설정 사용)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDrj01C1WXwAi6DdOTFdEt2pcsr-8qi76U",
+            authDomain: "strengthsfinder-45ff8.firebaseapp.com",
+            projectId: "strengthsfinder-45ff8",
+            storageBucket: "strengthsfinder-45ff8.firebasestorage.app",
+            messagingSenderId: "739606720301",
+            appId: "1:739606720301:web:3b23bd465808132b38eda4"
+        };
+
+        // Firebase 초기화
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // 전역에서 사용할 수 있도록 설정
+        window.firebaseDB = db;
+        window.getDocs = getDocs;
+        window.collection = collection;
+        window.query = query;
+        window.orderBy = orderBy;
+        window.where = where;
+    </script>
+
+    <script>
+        let allAssessments = [];
+        let filteredAssessments = [];
+
+        // 페이지 로드 시 데이터 불러오기
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+        });
+
+        async function loadData() {
+            const loading = document.getElementById('loading');
+            const emptyState = document.getElementById('emptyState');
+            
+            loading.style.display = 'block';
+            emptyState.style.display = 'none';
+
+            try {
+                if (!window.firebaseDB) {
+                    throw new Error('Firebase가 초기화되지 않았습니다.');
+                }
+
+                // Firestore에서 데이터 가져오기
+                const q = window.query(
+                    window.collection(window.firebaseDB, 'assessments'),
+                    window.orderBy('timestamp', 'desc')
+                );
+                
+                const querySnapshot = await window.getDocs(q);
+                allAssessments = [];
+                
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    allAssessments.push({
+                        id: doc.id,
+                        ...data
+                    });
+                });
+
+                filteredAssessments = [...allAssessments];
+                
+                if (allAssessments.length === 0) {
+                    loading.style.display = 'none';
+                    emptyState.style.display = 'block';
+                    return;
+                }
+
+                // UI 업데이트
+                updateStats();
+                updateDomainChart();
+                updateStudentsTable();
+                updateClassFilter();
+                
+                loading.style.display = 'none';
+
+            } catch (error) {
+                console.error('데이터 로드 오류:', error);
+                loading.style.display = 'none';
+                alert('데이터를 불러오는데 실패했습니다: ' + error.message);
+            }
+        }
+
+        function updateStats() {
+            const totalStudents = filteredAssessments.length;
+            const completedToday = filteredAssessments.filter(assessment => {
+                const today = new Date().toDateString();
+                const assessmentDate = new Date(assessment.completedAt).toDateString();
+                return today === assessmentDate;
+            }).length;
+
+            // 평균 점수 계산
+            const averageScores = calculateAverageScores();
+            const overallAverage = averageScores.overall;
+
+            // 상위 강점 분석
+            const topStrengths = analyzeTopStrengths();
+
+            const statsHtml = `
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-number">${totalStudents}</div>
+                    <div class="stat-label">총 검사 완료</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-number">${completedToday}</div>
+                    <div class="stat-label">오늘 완료</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-number">${overallAverage}</div>
+                    <div class="stat-label">전체 평균 점수</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-number">${topStrengths[0]?.korean || 'N/A'}</div>
+                    <div class="stat-label">최다 상위 강점</div>
+                </div>
+            `;
+
+            document.getElementById('stats').innerHTML = statsHtml;
+        }
+
+        function calculateAverageScores() {
+            if (filteredAssessments.length === 0) {
+                return { overall: '0.0', domains: {} };
+            }
+
+            const domainTotals = {
+                executing: { total: 0, count: 0 },
+                influencing: { total: 0, count: 0 },
+                relationship: { total: 0, count: 0 },
+                strategic: { total: 0, count: 0 }
+            };
+
+            let overallTotal = 0;
+            let overallCount = 0;
+
+            filteredAssessments.forEach(assessment => {
+                if (assessment.domainScores) {
+                    Object.keys(assessment.domainScores).forEach(domain => {
+                        const score = assessment.domainScores[domain].score;
+                        if (score && score > 0) {
+                            domainTotals[domain].total += score;
+                            domainTotals[domain].count++;
+                            overallTotal += score;
+                            overallCount++;
+                        }
+                    });
+                }
+            });
+
+            const domains = {};
+            Object.keys(domainTotals).forEach(domain => {
+                const data = domainTotals[domain];
+                domains[domain] = data.count > 0 ? (data.total / data.count).toFixed(1) : '0.0';
+            });
+
+            const overall = overallCount > 0 ? (overallTotal / overallCount).toFixed(1) : '0.0';
+
+            return { overall, domains };
+        }
+
+        function analyzeTopStrengths() {
+            const strengthCounts = {};
+
+            filteredAssessments.forEach(assessment => {
+                if (assessment.topStrengths) {
+                    assessment.topStrengths.forEach(strength => {
+                        if (!strengthCounts[strength.korean]) {
+                            strengthCounts[strength.korean] = 0;
+                        }
+                        strengthCounts[strength.korean]++;
+                    });
+                }
+            });
+
+            return Object.entries(strengthCounts)
+                .sort(([,a], [,b]) => b - a)
+                .map(([korean, count]) => ({ korean, count }));
+        }
+
+        function updateDomainChart() {
+            const averageScores = calculateAverageScores();
+            const domainInfo = {
+                executing: { name: '실행력', icon: '🎯' },
+                influencing: { name: '영향력', icon: '🌟' },
+                relationship: { name: '관계구축', icon: '🤝' },
+                strategic: { name: '전략적 사고', icon: '🧠' }
+            };
+
+            const chartHtml = Object.keys(domainInfo).map(domain => {
+                const score = averageScores.domains[domain] || '0.0';
+                const percentage = ((parseFloat(score) / 5) * 100).toFixed(0);
+                
+                return `
+                    <div class="domain-item">
+                        <div class="domain-icon">${domainInfo[domain].icon}</div>
+                        <div class="domain-name">${domainInfo[domain].name}</div>
+                        <div class="domain-score">${score}</div>
+                        <div class="domain-bar">
+                            <div class="domain-bar-fill" style="width: ${percentage}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('domainChart').innerHTML = chartHtml;
+        }
+
+        function updateStudentsTable() {
+            const tbody = document.getElementById('studentsTable');
+            
+            if (filteredAssessments.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #666;">검사 결과가 없습니다.</td></tr>';
+                return;
+            }
+
+            const tableHtml = filteredAssessments.map(assessment => {
+                const student = assessment.studentInfo;
+                const topStrengths = assessment.topStrengths?.slice(0, 3) || [];
+                const completedDate = new Date(assessment.completedAt).toLocaleDateString('ko-KR', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                // 전체 평균 계산
+                const overallAverage = calculateStudentAverage(assessment);
+                const scoreClass = getScoreClass(overallAverage);
+
+                const strengthsHtml = topStrengths.map(strength => 
+                    `<span class="strength-tag">${strength.korean}</span>`
+                ).join('');
+
+                return `
+                    <tr>
+                        <td><strong>${student.name}</strong></td>
+                        <td>${student.grade}학년 ${student.class}</td>
+                        <td>${student.number || '-'}</td>
+                        <td>${completedDate}</td>
+                        <td>
+                            <div class="strengths-list">
+                                ${strengthsHtml}
+                            </div>
+                        </td>
+                        <td>
+                            <span class="score-badge ${scoreClass}">
+                                ${overallAverage}점
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn" onclick="showStudentDetail('${assessment.id}')" style="padding: 8px 16px; font-size: 0.9em;">
+                                상세보기
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            tbody.innerHTML = tableHtml;
+        }
+
+        function calculateStudentAverage(assessment) {
+            if (!assessment.domainScores) return '0.0';
+            
+            const scores = Object.values(assessment.domainScores).map(domain => domain.score);
+            const validScores = scores.filter(score => score > 0);
+            
+            if (validScores.length === 0) return '0.0';
+            
+            const average = validScores.reduce((sum, score) => sum + score, 0) / validScores.length;
+            return average.toFixed(1);
+        }
+
+        function getScoreClass(score) {
+            const numScore = parseFloat(score);
+            if (numScore >= 4.0) return 'score-excellent';
+            if (numScore >= 3.5) return 'score-good';
+            if (numScore >= 3.0) return 'score-average';
+            return 'score-below';
+        }
+
+        function updateClassFilter() {
+            const classFilter = document.getElementById('classFilter');
+            const classes = [...new Set(allAssessments.map(assessment => assessment.studentInfo.class))].sort();
+            
+            classFilter.innerHTML = '<option value="">전체</option>' + 
+                classes.map(cls => `<option value="${cls}">${cls}</option>`).join('');
+        }
+
+        function applyFilters() {
+            const gradeFilter = document.getElementById('gradeFilter').value;
+            const classFilter = document.getElementById('classFilter').value;
+            const dateFilter = document.getElementById('dateFilter').value;
+
+            filteredAssessments = allAssessments.filter(assessment => {
+                const student = assessment.studentInfo;
+                const assessmentDate = new Date(assessment.completedAt).toDateString();
+                const filterDate = dateFilter ? new Date(dateFilter).toDateString() : null;
+
+                return (!gradeFilter || student.grade === gradeFilter) &&
+                       (!classFilter || student.class === classFilter) &&
+                       (!filterDate || assessmentDate === filterDate);
+            });
+
+            updateStats();
+            updateDomainChart();
+            updateStudentsTable();
+        }
+
+        function showStudentDetail(assessmentId) {
+            const assessment = allAssessments.find(a => a.id === assessmentId);
+            if (!assessment) return;
+
+            const student = assessment.studentInfo;
+            const results = assessment.results || [];
+            const domainScores = assessment.domainScores || {};
+
+            let detailHtml = `
+                <div style="max-width: 600px; margin: 0 auto;">
+                    <h2 style="text-align: center; color: #2c3e50; margin-bottom: 20px;">
+                        ${student.name} (${student.grade}학년 ${student.class} ${student.number || ''})
+                    </h2>
+                    
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <h3 style="color: #2c3e50; margin-bottom: 15px;">영역별 점수</h3>
+            `;
+
+            Object.keys(domainScores).forEach(domain => {
+                const domainInfo = {
+                    executing: { name: '실행력', icon: '🎯' },
+                    influencing: { name: '영향력', icon: '🌟' },
+                    relationship: { name: '관계구축', icon: '🤝' },
+                    strategic: { name: '전략적 사고', icon: '🧠' }
+                };
+                
+                const info = domainInfo[domain];
+                const score = domainScores[domain].score;
+                const percentage = ((score / 5) * 100).toFixed(0);
+
+                detailHtml += `
+                    <div style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                            <span>${info.icon} ${info.name}</span>
+                            <span style="font-weight: bold; color: #4facfe;">${score.toFixed(1)}점</span>
+                        </div>
+                        <div style="background: #ecf0f1; height: 10px; border-radius: 5px; overflow: hidden;">
+                            <div style="background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%); height: 100%; width: ${percentage}%; transition: width 0.5s ease;"></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            detailHtml += `
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                        <h3 style="color: #2c3e50; margin-bottom: 15px;">상위 강점 순위</h3>
+            `;
+
+            results.slice(0, 10).forEach((result, index) => {
+                const rank = index + 1;
+                const medalIcon = ['🥇', '🥈', '🥉'][index] || `${rank}위`;
+                
+                detailHtml += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 10px; background: white; border-radius: 8px;">
+                        <div>
+                            <span style="margin-right: 10px;">${medalIcon}</span>
+                            <strong>${result.korean}</strong>
+                            <span style="color: #666; margin-left: 5px;">(${result.name})</span>
+                        </div>
+                        <span style="font-weight: bold; color: #4facfe;">${result.score.toFixed(1)}점</span>
+                    </div>
+                `;
+            });
+
+            detailHtml += `
+                    </div>
+                </div>
+            `;
+
+            // 새 창에서 상세 정보 표시
+            const newWindow = window.open('', '_blank', 'width=800,height=600,scrollbars=yes');
+            newWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${student.name} 강점 검사 결과</title>
+                    <meta charset="UTF-8">
+                    <style>
+                        body { font-family: 'Segoe UI', sans-serif; padding: 20px; background: #f8f9fa; }
+                        .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+                    </style>
+                </head><!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>강점 검사 관리자 대시보드</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
