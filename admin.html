@@ -1,65 +1,44 @@
-.header p {
-            font-size: 1.2em;
-            opacity: 0.9;
+return [
+                    student.name,
+                    student.grade + '학년',
+                    student.studentId,
+                    student.gender,
+                    completedDate,
+                    executing,
+                    influencing,
+                    relationship,
+                    strategic,
+                    overall,
+                    topStrengths[0]?.korean || '',
+                    topStrengths[1]?.korean || '',
+                    topStrengths[2]?.korean || '',
+                    topStrengths[3]?.korean || '',
+                    topStrengths[4]?.korean || ''
+                ];
+            });
+
+            // CSV 문자열 생성
+            const csvContent = [headers, ...csvData]
+                .map(row => row.map(field => `"${field}"`).join(','))
+                .join('\n');
+
+            // UTF-8 BOM 추가 (한글 깨짐 방지)
+            const BOM = '\uFEFF';
+            const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
+
+            // 다운로드
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `강점검사결과_${new Date().toISOString().slice(0, 10)}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
-        
-        .controls {
-            background: #f8f9fa;
-            padding: 30px;
-            border-bottom: 1px solid #ecf0f1;
-        }
-        
-        .control-group {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .control-item {
-            display: flex;
-            flex-direction: column;
-            min-width: 200px;
-        }
-        
-        .control-item label {
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #2c3e50;
-        }
-        
-        .control-item select, .control-item input {
-            padding: 12px;
-            border: 2px solid #ecf0f1;
-            border-radius: 8px;
-            font-size: 1em;
-        }
-        
-        .control-item select:focus, .control-item input:focus {
-            border-color: #4facfe;
-            outline: none;
-        }
-        
-        .btn {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
-        }
-        
-        .btn-export {
+    </script>
+</body>
+</html>-export {
             background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
         }
         
@@ -362,12 +341,15 @@
                         <option value="1">1학년</option>
                         <option value="2">2학년</option>
                         <option value="3">3학년</option>
+                        <option value="4">4학년</option>
                     </select>
                 </div>
                 <div class="filter-item">
-                    <label for="classFilter">반 필터</label>
-                    <select id="classFilter" onchange="applyFilters()">
+                    <label for="genderFilter">성별 필터</label>
+                    <select id="genderFilter" onchange="applyFilters()">
                         <option value="">전체</option>
+                        <option value="남">남</option>
+                        <option value="여">여</option>
                     </select>
                 </div>
                 <div class="filter-item">
@@ -399,8 +381,9 @@
                         <thead>
                             <tr>
                                 <th>이름</th>
-                                <th>학년/반</th>
-                                <th>번호</th>
+                                <th>학년</th>
+                                <th>학번</th>
+                                <th>성별</th>
                                 <th>검사일시</th>
                                 <th>상위 강점</th>
                                 <th>전체 평균</th>
@@ -432,7 +415,7 @@
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
         import { getFirestore, collection, getDocs, query, orderBy, where } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
 
-        // Firebase 구성 (학생용 페이지와 동일한 설정 사용)
+        // Firebase 구성
         const firebaseConfig = {
             apiKey: "AIzaSyDrj01C1WXwAi6DdOTFdEt2pcsr-8qi76U",
             authDomain: "strengthsfinder-45ff8.firebaseapp.com",
@@ -647,7 +630,7 @@
             const tbody = document.getElementById('studentsTable');
             
             if (filteredAssessments.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #666;">검사 결과가 없습니다.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #666;">검사 결과가 없습니다.</td></tr>';
                 return;
             }
 
@@ -673,8 +656,9 @@
                 return `
                     <tr>
                         <td><strong>${student.name}</strong></td>
-                        <td>${student.grade}학년 ${student.class}</td>
-                        <td>${student.number || '-'}</td>
+                        <td>${student.grade}학년</td>
+                        <td>${student.studentId}</td>
+                        <td>${student.gender}</td>
                         <td>${completedDate}</td>
                         <td>
                             <div class="strengths-list">
@@ -718,17 +702,9 @@
             return 'score-below';
         }
 
-        function updateClassFilter() {
-            const classFilter = document.getElementById('classFilter');
-            const classes = [...new Set(allAssessments.map(assessment => assessment.studentInfo.class))].sort();
-            
-            classFilter.innerHTML = '<option value="">전체</option>' + 
-                classes.map(cls => `<option value="${cls}">${cls}</option>`).join('');
-        }
-
         function applyFilters() {
             const gradeFilter = document.getElementById('gradeFilter').value;
-            const classFilter = document.getElementById('classFilter').value;
+            const genderFilter = document.getElementById('genderFilter').value;
             const dateFilter = document.getElementById('dateFilter').value;
 
             filteredAssessments = allAssessments.filter(assessment => {
@@ -737,7 +713,7 @@
                 const filterDate = dateFilter ? new Date(dateFilter).toDateString() : null;
 
                 return (!gradeFilter || student.grade === gradeFilter) &&
-                       (!classFilter || student.class === classFilter) &&
+                       (!genderFilter || student.gender === genderFilter) &&
                        (!filterDate || assessmentDate === filterDate);
             });
 
@@ -757,7 +733,7 @@
             let detailHtml = `
                 <div style="max-width: 600px; margin: 0 auto;">
                     <h2 style="text-align: center; color: #2c3e50; margin-bottom: 20px;">
-                        ${student.name} (${student.grade}학년 ${student.class} ${student.number || ''})
+                        ${student.name} (${student.grade}학년 / 학번: ${student.studentId} / ${student.gender})
                     </h2>
                     
                     <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
@@ -829,17 +805,11 @@
                         body { font-family: 'Segoe UI', sans-serif; padding: 20px; background: #f8f9fa; }
                         .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
                     </style>
+                </head>
                 <body>
-                <div class="container">
-                    <h2 style="text-align: center; color: #2c3e50; margin-bottom: 20px;">
-                        ${student.name} (${student.grade}학년 ${student.class} ${student.number || ''})
-                    </h2>
-                    
-                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                        <h3 style="color: #2c3e50; margin-bottom: 15px;">영역별 점수</h3>
+                    <div class="container">
                         ${detailHtml}
                     </div>
-                </div>
                 </body>
                 </html>
             `);
@@ -854,7 +824,7 @@
 
             // CSV 헤더
             const headers = [
-                '이름', '학년', '반', '번호', '검사일시',
+                '이름', '학년', '학번', '성별', '검사일시',
                 '실행력 점수', '영향력 점수', '관계구축 점수', '전략적사고 점수', '전체평균',
                 '1위 강점', '2위 강점', '3위 강점', '4위 강점', '5위 강점'
             ];
@@ -876,44 +846,15 @@
                 return [
                     student.name,
                     student.grade + '학년',
-                    student.class,
-                    student.number || '',
+                    student.studentId,
+                    student.gender,
                     completedDate,
                     executing,
                     influencing,
                     relationship,
                     strategic,
                     overall,
-                    topStrengths[0]?.korean || '',
-                    topStrengths[1]?.korean || '',
-                    topStrengths[2]?.korean || '',
-                    topStrengths[3]?.korean || '',
-                    topStrengths[4]?.korean || ''
-                ];
-            });
-
-            // CSV 문자열 생성
-            const csvContent = [headers, ...csvData]
-                .map(row => row.map(field => `"${field}"`).join(','))
-                .join('\n');
-
-            // UTF-8 BOM 추가 (한글 깨짐 방지)
-            const BOM = '\uFEFF';
-            const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
-
-            // 다운로드
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            link.setAttribute('href', url);
-            link.setAttribute('download', `강점검사결과_${new Date().toISOString().slice(0, 10)}.csv`);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-    </script>
-</body>
-</html><!DOCTYPE html>
+                    <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -960,3 +901,62 @@
         .header p {
             font-size: 1.2em;
             opacity: 0.9;
+        }
+        
+        .controls {
+            background: #f8f9fa;
+            padding: 30px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .control-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .control-item {
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+        }
+        
+        .control-item label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+        
+        .control-item select, .control-item input {
+            padding: 12px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        
+        .control-item select:focus, .control-item input:focus {
+            border-color: #4facfe;
+            outline: none;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
+        }
+        
+        .btn
