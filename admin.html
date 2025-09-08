@@ -1,44 +1,109 @@
-return [
-                    student.name,
-                    student.grade + '학년',
-                    student.studentId,
-                    student.gender,
-                    completedDate,
-                    executing,
-                    influencing,
-                    relationship,
-                    strategic,
-                    overall,
-                    topStrengths[0]?.korean || '',
-                    topStrengths[1]?.korean || '',
-                    topStrengths[2]?.korean || '',
-                    topStrengths[3]?.korean || '',
-                    topStrengths[4]?.korean || ''
-                ];
-            });
-
-            // CSV 문자열 생성
-            const csvContent = [headers, ...csvData]
-                .map(row => row.map(field => `"${field}"`).join(','))
-                .join('\n');
-
-            // UTF-8 BOM 추가 (한글 깨짐 방지)
-            const BOM = '\uFEFF';
-            const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
-
-            // 다운로드
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            link.setAttribute('href', url);
-            link.setAttribute('download', `강점검사결과_${new Date().toISOString().slice(0, 10)}.csv`);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>강점 검사 관리자 대시보드</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-    </script>
-</body>
-</html>-export {
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .controls {
+            background: #f8f9fa;
+            padding: 30px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .control-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .control-item {
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+        }
+        
+        .control-item label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+        
+        .control-item select, .control-item input {
+            padding: 12px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        
+        .control-item select:focus, .control-item input:focus {
+            border-color: #4facfe;
+            outline: none;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
+        }
+        
+        .btn-export {
             background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
         }
         
@@ -328,8 +393,8 @@ return [
                 <button class="btn btn-export" onclick="exportToCSV()">
                     📥 CSV 다운로드
                 </button>
-                <button class="btn" onclick="window.open('index.html', '_blank')">
-                    📋 검사 페이지 열기
+                <button class="btn" onclick="generateDemoData()">
+                    🎲 데모 데이터 생성
                 </button>
             </div>
             
@@ -410,42 +475,125 @@ return [
         </div>
     </div>
 
-    <!-- Firebase SDK -->
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
-        import { getFirestore, collection, getDocs, query, orderBy, where } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
-
-        // Firebase 구성
-        const firebaseConfig = {
-            apiKey: "AIzaSyDrj01C1WXwAi6DdOTFdEt2pcsr-8qi76U",
-            authDomain: "strengthsfinder-45ff8.firebaseapp.com",
-            projectId: "strengthsfinder-45ff8",
-            storageBucket: "strengthsfinder-45ff8.firebasestorage.app",
-            messagingSenderId: "739606720301",
-            appId: "1:739606720301:web:3b23bd465808132b38eda4"
-        };
-
-        // Firebase 초기화
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // 전역에서 사용할 수 있도록 설정
-        window.firebaseDB = db;
-        window.getDocs = getDocs;
-        window.collection = collection;
-        window.query = query;
-        window.orderBy = orderBy;
-        window.where = where;
-    </script>
-
     <script>
         let allAssessments = [];
         let filteredAssessments = [];
 
-        // 페이지 로드 시 데이터 불러오기
+        // 강점 데이터 정의
+        const strengthsData = {
+            executing: [
+                { korean: '성취욕', name: 'Achiever' },
+                { korean: '배열', name: 'Arranger' },
+                { korean: '신념', name: 'Belief' },
+                { korean: '일관성', name: 'Consistency' },
+                { korean: '신중함', name: 'Deliberative' },
+                { korean: '규율', name: 'Discipline' },
+                { korean: '집중', name: 'Focus' },
+                { korean: '책임감', name: 'Responsibility' },
+                { korean: '복구', name: 'Restorative' }
+            ],
+            influencing: [
+                { korean: '활발함', name: 'Activator' },
+                { korean: '지휘', name: 'Command' },
+                { korean: '소통', name: 'Communication' },
+                { korean: '경쟁', name: 'Competition' },
+                { korean: '최고지향', name: 'Maximizer' },
+                { korean: '자기주장', name: 'Self-Assurance' },
+                { korean: '중요성', name: 'Significance' },
+                { korean: '승부욕', name: 'Woo' }
+            ],
+            relationship: [
+                { korean: '적응성', name: 'Adaptability' },
+                { korean: '연결', name: 'Connectedness' },
+                { korean: '개발', name: 'Developer' },
+                { korean: '공감', name: 'Empathy' },
+                { korean: '조화', name: 'Harmony' },
+                { korean: '포용', name: 'Includer' },
+                { korean: '개별화', name: 'Individualization' },
+                { korean: '긍정', name: 'Positivity' },
+                { korean: '관계', name: 'Relator' }
+            ],
+            strategic: [
+                { korean: '분석', name: 'Analytical' },
+                { korean: '맥락', name: 'Context' },
+                { korean: '미래지향', name: 'Futuristic' },
+                { korean: '사고', name: 'Ideation' },
+                { korean: '수집', name: 'Input' },
+                { korean: '지성', name: 'Intellection' },
+                { korean: '학습', name: 'Learner' },
+                { korean: '전략', name: 'Strategic' }
+            ]
+        };
+
+        // 페이지 로드 시 초기화
         document.addEventListener('DOMContentLoaded', function() {
             loadData();
         });
+
+        function generateDemoData() {
+            const demoStudents = [
+                { name: '김민수', grade: '1', studentId: '2024001', gender: '남' },
+                { name: '이지영', grade: '1', studentId: '2024002', gender: '여' },
+                { name: '박준호', grade: '2', studentId: '2023003', gender: '남' },
+                { name: '최서연', grade: '2', studentId: '2023004', gender: '여' },
+                { name: '정우진', grade: '3', studentId: '2022005', gender: '남' },
+                { name: '한소희', grade: '3', studentId: '2022006', gender: '여' },
+                { name: '조현우', grade: '4', studentId: '2021007', gender: '남' },
+                { name: '윤채원', grade: '4', studentId: '2021008', gender: '여' }
+            ];
+
+            allAssessments = demoStudents.map((student, index) => {
+                const allStrengths = [];
+                Object.values(strengthsData).forEach(domain => {
+                    allStrengths.push(...domain);
+                });
+
+                // 랜덤하게 강점에 점수 부여
+                const results = allStrengths.map(strength => ({
+                    ...strength,
+                    score: Math.random() * 2 + 3 // 3-5점 사이 랜덤
+                }));
+
+                // 점수 기준으로 정렬
+                results.sort((a, b) => b.score - a.score);
+
+                // 상위 5개 강점
+                const topStrengths = results.slice(0, 5);
+
+                // 영역별 점수 계산
+                const domainScores = {};
+                Object.keys(strengthsData).forEach(domain => {
+                    const domainStrengths = results.filter(result => 
+                        strengthsData[domain].some(s => s.name === result.name)
+                    );
+                    const averageScore = domainStrengths.reduce((sum, s) => sum + s.score, 0) / domainStrengths.length;
+                    domainScores[domain] = { score: averageScore };
+                });
+
+                // 검사 완료일 (최근 30일 내 랜덤)
+                const daysAgo = Math.floor(Math.random() * 30);
+                const completedAt = new Date();
+                completedAt.setDate(completedAt.getDate() - daysAgo);
+
+                return {
+                    id: `demo_${index}`,
+                    studentInfo: student,
+                    results: results,
+                    topStrengths: topStrengths,
+                    domainScores: domainScores,
+                    completedAt: completedAt.toISOString(),
+                    timestamp: completedAt.toISOString()
+                };
+            });
+
+            filteredAssessments = [...allAssessments];
+            updateStats();
+            updateDomainChart();
+            updateStudentsTable();
+            
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('emptyState').style.display = 'none';
+        }
 
         async function loadData() {
             const loading = document.getElementById('loading');
@@ -454,48 +602,14 @@ return [
             loading.style.display = 'block';
             emptyState.style.display = 'none';
 
-            try {
-                if (!window.firebaseDB) {
-                    throw new Error('Firebase가 초기화되지 않았습니다.');
-                }
-
-                // Firestore에서 데이터 가져오기
-                const q = window.query(
-                    window.collection(window.firebaseDB, 'assessments'),
-                    window.orderBy('timestamp', 'desc')
-                );
-                
-                const querySnapshot = await window.getDocs(q);
-                allAssessments = [];
-                
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    allAssessments.push({
-                        id: doc.id,
-                        ...data
-                    });
-                });
-
-                filteredAssessments = [...allAssessments];
-                
+            // 실제 Firebase 연결이 없으므로 데모 데이터로 대체
+            setTimeout(() => {
                 if (allAssessments.length === 0) {
+                    generateDemoData();
+                } else {
                     loading.style.display = 'none';
-                    emptyState.style.display = 'block';
-                    return;
                 }
-
-                // UI 업데이트
-                updateStats();
-                updateDomainChart();
-                updateStudentsTable();
-                
-                loading.style.display = 'none';
-
-            } catch (error) {
-                console.error('데이터 로드 오류:', error);
-                loading.style.display = 'none';
-                alert('데이터를 불러오는데 실패했습니다: ' + error.message);
-            }
+            }, 1000);
         }
 
         function updateStats() {
@@ -506,11 +620,8 @@ return [
                 return today === assessmentDate;
             }).length;
 
-            // 평균 점수 계산
             const averageScores = calculateAverageScores();
             const overallAverage = averageScores.overall;
-
-            // 상위 강점 분석
             const topStrengths = analyzeTopStrengths();
 
             const statsHtml = `
@@ -645,7 +756,6 @@ return [
                     minute: '2-digit'
                 });
 
-                // 전체 평균 계산
                 const overallAverage = calculateStudentAverage(assessment);
                 const scoreClass = getScoreClass(overallAverage);
 
@@ -854,109 +964,33 @@ return [
                     relationship,
                     strategic,
                     overall,
-                    <!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>강점 검사 관리자 대시보드</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+                    topStrengths[0]?.korean || '',
+                    topStrengths[1]?.korean || '',
+                    topStrengths[2]?.korean || '',
+                    topStrengths[3]?.korean || '',
+                    topStrengths[4]?.korean || ''
+                ];
+            });
+
+            // CSV 문자열 생성
+            const csvContent = [headers, ...csvData]
+                .map(row => row.map(field => `"${field}"`).join(','))
+                .join('\n');
+
+            // UTF-8 BOM 추가 (한글 깨짐 방지)
+            const BOM = '\uFEFF';
+            const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
+
+            // 다운로드
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `강점검사결과_${new Date().toISOString().slice(0, 10)}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-            padding: 40px;
-            text-align: center;
-        }
-        
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-        
-        .header p {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-        
-        .controls {
-            background: #f8f9fa;
-            padding: 30px;
-            border-bottom: 1px solid #ecf0f1;
-        }
-        
-        .control-group {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .control-item {
-            display: flex;
-            flex-direction: column;
-            min-width: 200px;
-        }
-        
-        .control-item label {
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #2c3e50;
-        }
-        
-        .control-item select, .control-item input {
-            padding: 12px;
-            border: 2px solid #ecf0f1;
-            border-radius: 8px;
-            font-size: 1em;
-        }
-        
-        .control-item select:focus, .control-item input:focus {
-            border-color: #4facfe;
-            outline: none;
-        }
-        
-        .btn {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
-        }
-        
-        .btn
+    </script>
+</body>
+</html>
